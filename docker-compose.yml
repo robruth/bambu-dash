@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+
+  mqtt-exporter:
+    image: kpetrem/mqtt-exporter
+    ports:
+      - 9000:9000
+    environment:
+      - LOG_LEVEL=DEBUG
+      - MQTT_ADDRESS=
+      - MQTT_PORT=8883
+      - MQTT_USERNAME=bblp
+      - MQTT_PASSWORD=
+      - MQTT_TOPIC=
+      - PROMETHEUS_PREFIX=bambu_
+      - TOPIC_LABEL=bambu
+    restart: unless-stopped
+      
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus-data:/prometheus
+    command: --web.enable-lifecycle  --config.file=/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    volumes:
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - grafana-data:/var/lib/grafana
+    environment:
+      - TERM=linux
+      - GF_INSTALL_PLUGINS=grafana-mqtt-datasource
+
+volumes:
+  prometheus-data:
+  grafana-data:
