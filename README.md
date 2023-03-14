@@ -6,10 +6,10 @@ Simple BambuLabs Grafana dashboard using [mqtt-exporter](https://github.com/kpet
 
 ### Configuration
 
-The minimum configuration required is to set IP, password and topic:
+The minimum configuration required is to set the following in docker-compose.yml: 
 
   * `MQTT_ADDRESS`: IP or hostname of BambuLabs printer 
-  * `MQTT_TOPIC`: device/<your printers serial>/repo 
+  * `MQTT_TOPIC`: device/"<your printers serial>"/repo 
   * `MQTT_PASSWORD`: Access Code found in Settings -> Network 
 
 Your serial number can be found by connecting to MQTT via desktop client such as [MQTT Explorer](http://mqtt-explorer.com) 
